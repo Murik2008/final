@@ -1,0 +1,28 @@
+sudo apt update
+sudo apt install graphviz
+digraph AnimalDiagram {
+    fontname="Helvetica,Arial,sans-serif"
+    node [fontname="Helvetica,Arial,sans-serif", shape=box, style=filled, color=lightgrey];
+    edge [fontname="Helvetica,Arial,sans-serif"];
+
+    Animal [label="Animal"];
+    DomesticAnimal [label="DomesticAnimal"];
+    PackAnimal [label="PackAnimal"];
+
+    Dog [label="Dog"];
+    Cat [label="Cat"];
+    Hamster [label="Hamster"];
+    Horse [label="Horse"];
+    Camel [label="Camel"];
+    Donkey [label="Donkey"];
+
+    Animal -> DomesticAnimal;
+    Animal -> PackAnimal;
+    DomesticAnimal -> Dog;
+    DomesticAnimal -> Cat;
+    DomesticAnimal -> Hamster;
+    PackAnimal -> Horse;
+    PackAnimal -> Camel;
+    PackAnimal -> Donkey;
+}
+dot -Tpng animal_diagram.dot -o animal_diagram.png
