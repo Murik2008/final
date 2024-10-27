@@ -1,0 +1,11 @@
+echo -e "Dogs\nCats\nHamsters" > DomesticAnimals
+echo -e "Horses\nCamels\nDonkeys" > PackAnimals
+cat DomesticAnimals PackAnimals > AllAnimals
+cat AllAnimals
+mv AllAnimals HumanFriends
+mkdir AnimalShelter && mv HumanFriends AnimalShelter/
+sudo apt update
+sudo apt install mysql-server
+sudo dpkg -i <package_name>.deb
+sudo dpkg -r <package_name>
+history > history.txt

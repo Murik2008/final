@@ -1,0 +1,50 @@
+mysql -u root -p
+CREATE DATABASE HumanFriends;
+USE HumanFriends;
+CREATE TABLE Animal (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50),
+    birth_date DATE
+);
+
+CREATE TABLE DomesticAnimals (
+    animal_id INT,
+    type ENUM('Dog', 'Cat', 'Hamster'),
+    FOREIGN KEY (animal_id) REFERENCES Animal(id)
+);
+
+CREATE TABLE PackAnimals (
+    animal_id INT,
+    type ENUM('Horse', 'Camel', 'Donkey'),
+    FOREIGN KEY (animal_id) REFERENCES Animal(id)
+);
+CREATE TABLE Commands (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    command_name VARCHAR(50)
+);
+
+CREATE TABLE AnimalCommands (
+    animal_id INT,
+    command_id INT,
+    FOREIGN KEY (animal_id) REFERENCES Animal(id),
+    FOREIGN KEY (command_id) REFERENCES Commands(id)
+);
+INSERT INTO Animal (name, birth_date) VALUES ('Buddy', '2021-06-15');
+INSERT INTO DomesticAnimals (animal_id, type) VALUES (LAST_INSERT_ID(), 'Dog');
+INSERT INTO Commands (command_name) VALUES ('Sit'), ('Fetch');
+INSERT INTO AnimalCommands (animal_id, command_id) VALUES (1, 1), (1, 2);
+DELETE FROM PackAnimals WHERE type = 'Camel';
+CREATE TABLE HorsesAndDonkeys AS 
+SELECT * FROM PackAnimals WHERE type IN ('Horse', 'Donkey');
+CREATE TABLE YoungAnimals AS 
+SELECT Animal.*, TIMESTAMPDIFF(MONTH, birth_date, CURDATE()) AS age_in_months 
+FROM Animal 
+WHERE TIMESTAMPDIFF(YEAR, birth_date, CURDATE()) BETWEEN 1 AND 3;
+CREATE TABLE AllAnimals AS
+SELECT Animal.id, Animal.name, Animal.birth_date, DomesticAnimals.type AS original_class 
+FROM Animal 
+LEFT JOIN DomesticAnimals ON Animal.id = DomesticAnimals.animal_id
+UNION
+SELECT Animal.id, Animal.name, Animal.birth_date, PackAnimals.type AS original_class 
+FROM Animal 
+LEFT JOIN PackAnimals ON Animal.id = PackAnimals.animal_id;
